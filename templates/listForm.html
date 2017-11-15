@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>환영합니다</div>
+        <table border="1">
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>이름</th>
+                <th>등록일자</th>
+            </tr>
+             
+             {% for entry in entries %} 
+             <tr>
+                 
+                 <td>{{ entry.seq }}</td>
+                 <td>{{ entry.id }}</td>
+                 <td>{{ entry.name }}</td>
+                 <td>{{ entry.rgi_dt }}</td>
+                 
+             </tr>
+             {% else %}
+             <tr>
+                 <td colspan="4">조회내역이 없습니다</td>
+             </tr>
+                 
+             {% endfor %}
+                
+            
+        </table>
+    </body>
+</html>
