@@ -23,15 +23,19 @@ and open the template in the editor.
                 }else if(form.passwd.value == ""){
                     alert("비밀번호를 입력하세요");
                     return false;
+                }else if(form.name.value == ""){
+                    alert("이름를 입력하세요");
+                    return false;
                 }
                 form.submit();
 
             }
         </script>
         <div>TODO write content</div>
-        <form id="sendForm" method="post" action="/login">
-            <input id="id" name="id" type="text"/>
-            <input id="passwd" name="passwd" type="password" />
+        <form id="sendForm" method="post" action="/registUser">
+            <input id="id" name="id" type="text"/><br/>
+            <input id="passwd" name="passwd" type="password" /><br/>
+            <input id="name" name="name" type="text"/><br/>
             <button onclick="javascript:sendForm()" style="width: 50px;height: 20px;" value="전송" />
         </form>
         
