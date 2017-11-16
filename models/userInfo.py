@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
-from sqlalchemy import Column,String,Integer,Date
+from sqlalchemy import Column,String,Integer,Date,Sequence
 from module.database import Base
 
 class UserInfo(Base):  
     __tablename__ = 'userinfo'
-    seq = Column(Integer)
-    id = Column(String, primary_key=True)
+    id = Column(String,primary_key=True)
     passwd = Column(String)
     name = Column(String)
     rgi_dt = Column(Date)
@@ -19,12 +18,7 @@ class UserInfo(Base):
         self.rgi_dt = rgi_dt
 
     def __repr__(self):
-        s = {
-            'id' : self.id,
-            'passwd' : self.passwd,
-            'name' : self.name
-        }
-        return str(s)
+        return '<userinfo %r>' % (self.name)
 
     def as_dict(self):
         result={}       
