@@ -94,7 +94,7 @@ def regist_Form():
     return render_template('regist.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
 
 
 
