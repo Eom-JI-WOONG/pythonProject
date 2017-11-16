@@ -23,8 +23,8 @@ def user_loader(id):
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    print '로그인을 먼저 해주세요'
-    return render_template('index.html')
+    res=dict(msg='로그인을 먼저 해주세요', errorcode='9500')
+    return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.before_request
 def before_request():
@@ -40,6 +40,7 @@ def hello_word():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    print type(request.form['id'])
     id = request.form['id']
     passwd = request.form['passwd']
 
@@ -52,7 +53,12 @@ def login():
     else:
         USERS[id].authenticated = True
         login_user(USERS[id], remember=True)
-        res=dict(msg='로그인 성공하였습니다', errorcode='0000')
+
+        print USERS[id].get_name()
+        username =USERS[id].get_name().encode('utf-8')
+        print type(username)
+        res=dict(msg='로그인 성공하였습니다', errorcode='0000',name=username)
+        print res
         return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
     
@@ -60,18 +66,35 @@ def login():
 @login_required
 def show_Select():
     user = current_user;
-    if current_user.is_authenticated():
-        print "로그인을 하셨군요"
-    else:
-        print "로그인을 안했네요"
     entries = us.show_All()
-    print entries
-    return render_template('listForm.html', entries=entries);
+    return json.dumps(entries, ensure_ascii=False, encoding="utf-8")
+
+@app.route('/registUser', methods=['GET', 'POST'])
+@login_required
+def user_Regist():
+    id = request.form['id']
+    passwd = request.form['passwd']
+    name = request.form['name']
+
+    if id in USERS:
+        res=dict(msg='이미 등록 된 사용자가 있습니다', errorcode='9200')
+    else:
+        try:
+            us.regist_User(id,passwd,name)
+            res=dict(msg='등록처리 완료', errorcode='0000')
+        except Exception as e:
+            print e
+            res=dict(msg='등록 처리중 알수 없는 오류 발생', errorcode='9300')
+
+    return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/regist', methods=['GET', 'POST'])
 @login_required
-def user_Regist():
-    return "등록페이지 입니다"
+def regist_Form():
+    return render_template('regist.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
