@@ -38,7 +38,7 @@ def teardown_request(exception):
 def hello_word():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/api/login', methods=['GET','POST'])
 def login():
     print type(request.form['id'])
     id = request.form['id']
@@ -69,7 +69,7 @@ def show_Select():
     entries = us.show_All()
     return json.dumps(entries, ensure_ascii=False, encoding="utf-8")
 
-@app.route('/registUser', methods=['GET', 'POST'])
+@app.route('/api/registUser', methods=['GET', 'POST'])
 @login_required
 def user_Regist():
     id = request.form['id']
