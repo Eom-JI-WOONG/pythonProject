@@ -87,7 +87,8 @@ def user_Regist():
             print e
             res=dict(msg='등록 처리중 알수 없는 오류 발생', errorcode='9300')
 
-    print '응답메세지:' % (json.dumps(res, ensure_ascii=False, encoding="utf-8"))
+    print '응답메세지:'
+    print json.dumps(res, ensure_ascii=False, encoding="utf-8")
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/regist', methods=['GET', 'POST'])
