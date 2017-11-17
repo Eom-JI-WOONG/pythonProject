@@ -24,6 +24,7 @@ def user_loader(id):
 @login_manager.unauthorized_handler
 def unauthorized():
     res=dict(msg='로그인을 먼저 해주세요', errorcode='9500')
+    print res
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.before_request
@@ -86,6 +87,7 @@ def user_Regist():
             print e
             res=dict(msg='등록 처리중 알수 없는 오류 발생', errorcode='9300')
 
+    print '응답메세지:' % res
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/regist', methods=['GET', 'POST'])
