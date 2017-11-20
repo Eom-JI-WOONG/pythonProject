@@ -41,7 +41,6 @@ def login():
     else:
         username =USERS[id].get_name().encode('utf-8')
         res=dict(msg='로그인 성공하였습니다', errorcode='0000',name=username)
-        print res
         return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
     
@@ -64,11 +63,8 @@ def user_Regist():
             us.regist_User(id,passwd,name)
             res=dict(msg='등록처리 완료', errorcode='0000')
         except Exception as e:
-            print e
             res=dict(msg='등록 처리중 알수 없는 오류 발생', errorcode='9300')
 
-    print '응답메세지:'
-    print json.dumps(res, ensure_ascii=False, encoding="utf-8")
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/regist', methods=['GET', 'POST'])

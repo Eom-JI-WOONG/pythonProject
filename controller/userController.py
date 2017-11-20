@@ -39,14 +39,12 @@ class userInfoService:
         users={}
         for q in querys:
             users[q.id] = User(q.id,q.passwd,q.name)
-        print users
         return users
 
     @staticmethod
     def regist_User(userId,passwd,name):
         print "Regist user method start!"
         user = UserInfo(userId,passwd,name,datetime.datetime.now())
-        print user
         try:
             db_session.add(user)
             db_session.commit()
