@@ -4,28 +4,13 @@ import json
 from flask import Flask, request, render_template, redirect, url_for,jsonify
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
+#from module.Logger import Logger
 
 from controller.userController import userInfoService as us
 
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-#############LOGIN 사용자정보를 가져온다##########################
-USERS = us.user_Info()
-
-###########################################################
-@login_manager.user_loader
-def user_loader(id):
-    return USERS[id]
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    res=dict(msg='로그인을 먼저 해주세요', errorcode='9500')
-    print res
-    return json.dumps(res, ensure_ascii=False, encoding="utf-8")
+#logger = Logger().getLogger()
 
 @app.before_request
 def before_request():
@@ -37,6 +22,7 @@ def teardown_request(exception):
 
 @app.route('/')
 def hello_word():
+
     return render_template('index.html')
 
 @app.route('/api/login', methods=['GET','POST'])
@@ -44,6 +30,7 @@ def login():
     print type(request.form['id'])
     id = request.form['id']
     passwd = request.form['passwd']
+    USERS = us.user_Info()
 
     if id not in USERS:
         res=dict(msg='등록된 사용자가 없습니다', errorcode='9000')
@@ -52,31 +39,24 @@ def login():
         res=dict(msg='비밀번호가 틀렸습니다', errorcode='9100')
         return json.dumps(res, ensure_ascii=False, encoding="utf-8")
     else:
-        USERS[id].authenticated = True
-        login_user(USERS[id], remember=True)
-
-        print USERS[id].get_name()
         username =USERS[id].get_name().encode('utf-8')
-        print type(username)
         res=dict(msg='로그인 성공하였습니다', errorcode='0000',name=username)
         print res
         return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
     
 @app.route('/search', methods=['GET','POST'])
-@login_required
 def show_Select():
     user = current_user;
     entries = us.show_All()
     return json.dumps(entries, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/api/registUser', methods=['GET', 'POST'])
-@login_required
 def user_Regist():
     id = request.form['id']
     passwd = request.form['passwd']
     name = request.form['name']
-
+    USERS = us.user_Info()
     if id in USERS:
         res=dict(msg='이미 등록 된 사용자가 있습니다', errorcode='9200')
     else:
@@ -92,12 +72,12 @@ def user_Regist():
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
 
 @app.route('/regist', methods=['GET', 'POST'])
-@login_required
 def regist_Form():
     return render_template('regist.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
+
 
 
 

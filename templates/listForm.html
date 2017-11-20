@@ -11,6 +11,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+    <script>
+            function sendForm(){
+                locatin.herf = "http://localhost:5000/regist"
+
+            }
+        </script>
         <div>환영합니다</div>
         <table border="1">
             <tr>
@@ -37,6 +43,7 @@ and open the template in the editor.
              {% endfor %}
                 
             
-        </table>
+        </table><br>
+        <button onclick="javascript:sendForm()" style="width: 50px;height: 20px;" value="전송" />
     </body>
 </html>
