@@ -1,0 +1,6 @@
+{
+  "DB_URL" : "localhost/test",
+  "DB_USER" : "test",
+  "DB_PASSWD" : "a454545!",
+  "LOG_LEVEL" : "DEBUG"
+}

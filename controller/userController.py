@@ -5,6 +5,7 @@ import json,datetime
 from models.userInfo import UserInfo
 from module.User import User
 from module.database import db_session
+from module.Logger import logger
 
 ######################사용자 정보 요청 Controller##########################
 class userInfoService:
@@ -43,7 +44,7 @@ class userInfoService:
 
     @staticmethod
     def regist_User(userId,passwd,name):
-        print "Regist user method start!"
+        logger.debug("Regist user method start!")
         user = UserInfo(userId,passwd,name,datetime.datetime.now())
         try:
             db_session.add(user)

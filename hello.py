@@ -1,24 +1,22 @@
 # -*- coding: UTF-8 -*-
-import os
 import json
-from flask import Flask, request, render_template, redirect, url_for,jsonify
-from flask_login import LoginManager
-from flask_login import login_user, logout_user, current_user, login_required
-#from module.Logger import Logger
+
+from flask import Flask, request, render_template
+from flask_login import current_user
 
 from controller.userController import userInfoService as us
-
+from module.Logger import logger
 
 app = Flask(__name__)
-#logger = Logger().getLogger()
+
 
 @app.before_request
 def before_request():
-    print 'before_request'
+    logger.debug('before_request')
 
 @app.teardown_request
 def teardown_request(exception):
-    print 'teardown_request'
+    logger.debug('teardown_request')
 
 @app.route('/')
 def hello_word():
@@ -27,7 +25,6 @@ def hello_word():
 
 @app.route('/api/login', methods=['GET','POST'])
 def login():
-    print type(request.form['id'])
     id = request.form['id']
     passwd = request.form['passwd']
     USERS = us.user_Info()
@@ -63,6 +60,7 @@ def user_Regist():
             us.regist_User(id,passwd,name)
             res=dict(msg='등록처리 완료', errorcode='0000')
         except Exception as e:
+            logger.error('오류발생:'+ e)
             res=dict(msg='등록 처리중 알수 없는 오류 발생', errorcode='9300')
 
     return json.dumps(res, ensure_ascii=False, encoding="utf-8")
@@ -72,6 +70,10 @@ def regist_Form():
     return render_template('regist.html')
 
 if __name__ == '__main__':
+    with open('conf/config.json', 'r') as f:
+        config = json.load(f)
+
+    logger.setLevel(config['LOG_LEVEL'])
     app.run(debug=True, host="0.0.0.0")
 
 
